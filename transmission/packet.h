@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-#ifdef PACKET_H
+#ifndef PACKET_H
 #define PACKET_H
 
 #ifdef __cplusplus
