@@ -1,4 +1,5 @@
 #include <iostream>
+#include "DataFileLogger.h"
 
 int main()
 {
