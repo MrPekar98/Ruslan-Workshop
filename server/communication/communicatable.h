@@ -8,8 +8,8 @@ namespace ruslan
     {
     public:
         virtual ~communicatable() {}
-        virtual int writeto(void* buffer, unsigned len) = 0;
-        virtual int readfrom(void* buffer, unsigned len) = 0;
+        virtual int writeto(void* buffer, unsigned len) const = 0;
+        virtual int readfrom(void* buffer, unsigned len) const = 0;
     };
 }
 
