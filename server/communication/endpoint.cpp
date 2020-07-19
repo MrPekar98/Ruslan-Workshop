@@ -6,6 +6,17 @@ namespace ruslan
 {
     //endpoint::endpoint(int client_fd) : fd(client_fd) {}
 
+    /*endpoint::~endpoint()
+    {
+        close(this->fd);
+    }*/
+
+    // Getter to file descriptor.
+    int endpoint::get_fd() const
+    {
+        return this->fd;
+    }
+
     // Sends message to endpoint.
     int endpoint::writeto(void* buffer, unsigned len)
     {
@@ -42,5 +53,14 @@ namespace ruslan
         delete[] buffer_read;
 
         return ret;
+    }
+
+    // Assignment operator for copying.
+    // Caller is responsible for closing file old descriptor.
+    const endpoint& endpoint::operator=(const endpoint& rvalue)
+    {
+        this->fd = rvalue.get_fd();
+
+        return *this;
     }
 }

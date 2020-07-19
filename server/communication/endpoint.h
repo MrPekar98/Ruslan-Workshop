@@ -1,5 +1,6 @@
 #include "communicatable.h"
 #include <string>
+#include <unistd.h>
 
 namespace ruslan
 {
@@ -7,9 +8,16 @@ namespace ruslan
     {
     public:
         endpoint(int client_fd): fd(client_fd) {}
-        ~endpoint() {}
+        ~endpoint()
+        {
+            close(this->fd);
+        }
+
+
+        int get_fd() const;
         int writeto(void* buffer, unsigned len) override;
         int readfrom(void* buffer, unsigned len) override;
+        const endpoint& operator=(const endpoint& rvalue);
         const endpoint& operator<<(const std::string& str) const;
 
         template<typename T>
