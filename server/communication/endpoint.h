@@ -15,8 +15,8 @@ namespace ruslan
 
 
         int get_fd() const;
-        int writeto(void* buffer, unsigned len) override;
-        int readfrom(void* buffer, unsigned len) override;
+        int writeto(void* buffer, unsigned len) const override;
+        int readfrom(void* buffer, unsigned len) const override;
         const endpoint& operator=(const endpoint& rvalue);
         const endpoint& operator<<(const std::string& str) const;
 

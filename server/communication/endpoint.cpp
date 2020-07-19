@@ -18,13 +18,13 @@ namespace ruslan
     }
 
     // Sends message to endpoint.
-    int endpoint::writeto(void* buffer, unsigned len)
+    int endpoint::writeto(void* buffer, unsigned len) const
     {
         return write(this->fd, buffer, len);
     }
 
     // Reads message from endpoint into buffer.
-    int endpoint::readfrom(void* buffer, unsigned len)
+    int endpoint::readfrom(void* buffer, unsigned len) const
     {
         return read(this->fd, buffer, len);
     }
