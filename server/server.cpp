@@ -1,6 +1,6 @@
 #include <iostream>
 #include "DataFileLogger.h"
-#include "endpoint.h"
+#include "communication/endpoint.h"
 
 int main()
 {
