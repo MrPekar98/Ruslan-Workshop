@@ -3,7 +3,7 @@
 
 int main()
 {
-
+    printf("This program uses CURL.\n");
 
     return 0;
 }
