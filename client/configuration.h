@@ -1,7 +1,0 @@
-#ifndef CONFIGURATION_H
-#define CONFIGURATION_H
-
-#define WINDOWS 1
-#define UNIX_STYLE !WINDOWS
-
-#endif
