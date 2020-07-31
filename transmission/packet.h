@@ -1,5 +1,3 @@
-#include <stdlib.h>
-
 #ifndef PACKET_H
 #define PACKET_H
 
