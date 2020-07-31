@@ -1,9 +1,8 @@
-#include <stdio.h>
-#include <curl/curl.h>
+#include "transmitter.h"
 
 int main()
 {
-    printf("This program uses CURL.\n");
+
 
     return 0;
 }
