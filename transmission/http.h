@@ -27,7 +27,7 @@ struct http http_set_port(unsigned port);
 const char *http_str(struct http request);
 void http_set_url(struct http *RESTRICT request, const char *url);
 void http_add_header(struct http *RESTRICT request, const char *name, const char *value);
-const char *http_get(struct htttp request);
+const char *http_get(struct http request);
 void http_post(struct http request, const char *body);
 
 #endif
