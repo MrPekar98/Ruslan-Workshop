@@ -12,10 +12,16 @@ extern "C"
 {
 #endif
 
+struct property
+{
+    char *name, *value;
+}
+
 struct http
 {
-    unsigned port;
+    unsigned port, property_count;
     char *url, *header_name, *header_value;
+    struct property *header_properties;
 };
 
 #ifdef __cplusplus
@@ -26,7 +32,7 @@ struct http
 struct http http_set_port(unsigned port);
 const char *http_str(struct http request);
 void http_set_url(struct http *RESTRICT request, const char *url);
-void http_add_header(struct http *RESTRICT request, const char *name, const char *value);
+void http_add_header_property(struct http *RESTRICT request, const char *name, const char *value);
 const char *http_get(struct http request);
 void http_post(struct http request, const char *body);
 
