@@ -19,7 +19,7 @@ void http_set_url(struct http *RESTRICT request, const char *url)
 }
 
 // Adds header property to http request.
-void http_add_header_property(struct http *RESTRUCT request, const char *name, const char *value)
+void http_add_header_property(struct http *RESTRICT request, const char *name, const char *value)
 {
 
 }

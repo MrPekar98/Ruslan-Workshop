@@ -15,7 +15,7 @@ extern "C"
 struct property
 {
     char *name, *value;
-}
+};
 
 struct http
 {
@@ -33,6 +33,6 @@ void http_set_port(struct http *RESTRICT request, unsigned port);
 const char *http_str(struct http request);
 void http_set_url(struct http *RESTRICT request, const char *url);
 void http_add_header_property(struct http *RESTRICT request, const char *name, const char *value);
-void http_post(struct http request, const char *body);
+const char *http_post(struct http request, const char *body);
 
 #endif
