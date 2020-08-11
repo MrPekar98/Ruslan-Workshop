@@ -20,7 +20,7 @@ struct property
 struct http
 {
     unsigned port, property_count;
-    char *url, *header_name, *header_value;
+    char *url;
     struct property *header_properties;
 };
 
