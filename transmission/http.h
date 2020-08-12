@@ -28,7 +28,7 @@ struct http
 #endif
 
 // Prototypes.
-struct http http_set_port(unsigned port);
+struct http http_init(unsigned port);
 const char *http_str(struct http request);
 void http_add_header_property(struct http *RESTRICT request, const char *name, const char *value);
 const char *http_post(struct http request, const char *body);
