@@ -13,4 +13,4 @@ transmitter.o: transmitter.c
 	${CC} -c transmitter.c
 
 clean:
-	rm http.o transmitter.o
+	rm http.o transmitter.o program.o
