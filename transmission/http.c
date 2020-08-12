@@ -9,7 +9,7 @@ struct http http_init(unsigned port)
 }
 
 // Converts http struct into string. This is also used for GET requests.
-const char *http_str(struct http request)
+const char *http_str(struct http request, req_t type, const char *post_args)
 {
 
 }
@@ -27,10 +27,4 @@ void http_add_header_property(struct http *RESTRICT request, const char *name, c
     strcpy(prop.name, name);
     strcpy(prop.value, value);
     request->header_properties[request->property_count++] = prop;
-}
-
-// Creates a post request string from http struct and parameters.
-const char *http_post(struct http request, const char *body)
-{
-
 }
