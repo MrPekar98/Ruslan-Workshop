@@ -20,7 +20,6 @@ struct property
 struct http
 {
     unsigned port, property_count;
-    char *url;
     struct property *header_properties;
 };
 
@@ -31,7 +30,6 @@ struct http
 // Prototypes.
 void http_set_port(struct http *RESTRICT request, unsigned port);
 const char *http_str(struct http request);
-void http_set_url(struct http *RESTRICT request, const char *url);
 void http_add_header_property(struct http *RESTRICT request, const char *name, const char *value);
 const char *http_post(struct http request, const char *body);
 
