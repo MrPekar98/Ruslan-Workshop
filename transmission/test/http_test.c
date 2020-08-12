@@ -2,23 +2,23 @@
 #include <string.h>
 #include "../http.h"
 
-void test_set_port();
+void test_init();
 void test_adding_header_property();
 
 int main()
 {
-    test_set_port();
+    test_init();
     test_adding_header_property();
 
     return 0;
 }
 
 // Tests setter to port number.
-void test_set_port()
+void test_init()
 {
-    struct http req;
-    http_set_port(&req, 8080);
+    struct http req = http_init(8080);
     assert(req.port == 8080);
+    assert(req.property_count == 0);
 }
 
 // Tests adding header.
