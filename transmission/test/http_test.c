@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include <assert.h>
 #include <string.h>
 #include "../http.h"
@@ -16,15 +18,14 @@ int main()
 // Tests setter to port number.
 void test_init()
 {
-    struct http req = http_init(8080);
-    assert(req.port == 8080);
+    struct http req = http_init();
     assert(req.property_count == 0);
 }
 
 // Tests adding header.
 void test_adding_header_property()
 {
-    struct http req;
+    struct http req = http_init();
     http_add_header_property(&req, "Key1", "Value1");
     http_add_header_property(&req, "Key2", "Value2");
 
