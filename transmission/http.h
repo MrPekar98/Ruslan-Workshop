@@ -33,7 +33,7 @@ struct http
 #endif
 
 // Prototypes.
-struct http http_init(unsigned port);
+struct http http_init();
 const char *http_str(struct http request, const char *page, req_t type, const char *post_args);
 void http_add_header_property(struct http *RESTRICT request, const char *name, const char *value);
 
