@@ -26,6 +26,8 @@ struct http
 {
     unsigned property_count;
     struct property *header_properties;
+    req_t request_type;
+    char *page;
 };
 
 #ifdef __cplusplus
@@ -33,8 +35,8 @@ struct http
 #endif
 
 // Prototypes.
-struct http http_init();
-const char *http_str(struct http request, const char *page, req_t type, const char *post_args);
+struct http http_init(const char *page, req_t request_type);
+const char *http_str(struct http request, const char *post_args);
 void http_add_header_property(struct http *RESTRICT request, const char *name, const char *value);
 
 #endif

@@ -18,14 +18,17 @@ int main()
 // Tests setter to port number.
 void test_init()
 {
-    struct http req = http_init();
+    struct http req = http_init("TestPage", POST);
+
     assert(req.property_count == 0);
+    assert(strcmp(req.page, "TestPage") == 0);
+    assert(req.request_type == POST);
 }
 
 // Tests adding header.
 void test_adding_header_property()
 {
-    struct http req = http_init();
+    struct http req = http_init("TestPage", POST);
     http_add_header_property(&req, "Key1", "Value1");
     http_add_header_property(&req, "Key2", "Value2");
 

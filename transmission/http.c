@@ -8,17 +8,20 @@ static unsigned long property_length(const struct property *RESTRICT property_li
 static char *properties_str(const struct property *RESTRICT properties, unsigned len);
 
 // Setter to port number.
-struct http http_init(unsigned port)
+struct http http_init(const char *page, req_t request_type)
 {
-    return (struct http) {.property_count = 0};
+    struct http request = {.property_count = 0, .page = malloc(strlen(page) + 1), .request_type = request_type};
+    strcpy(request.page, page);
+
+    return request;
 }
 
 // Converts http struct into string. This is also used for GET requests.
-const char *http_str(struct http request, const char *page, req_t type, const char *post_args)
+const char *http_str(struct http request, const char *post_args)
 {
-    char *str_request = malloc(property_length(request.header_properties, request.property_count) + (post_args != NULL ? strlen(post_args) : 0) + 100);
+    char *str_request = malloc(property_length(request.header_properties, request.property_count) + (post_args != NULL ? strlen(post_args) : 0) + strlen(request.page) + 100);
     char *header_properties = properties_str(request.header_properties, request.property_count);
-    sprintf(str_request, "%s %s HTTP/1.1\r\n%s%s%s", type == POST ? "POST" : type == GET ? "GET" : "UNKNOWN", page, header_properties, type == POST ? "\r\n" : "", type == POST && post_args != NULL ? post_args : "");
+    sprintf(str_request, "%s %s HTTP/1.1\r\n%s%s%s", request.request_type == POST ? "POST" : request.request_type == GET ? "GET" : "UNKNOWN", request.page, header_properties, request.request_type == POST ? "\r\n" : "", request.request_type == POST && post_args != NULL ? post_args : "");
     free(header_properties);
 
     return str_request;
