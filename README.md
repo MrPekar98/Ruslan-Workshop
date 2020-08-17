@@ -1,2 +1,2 @@
 # Ruslan-Workshop
-Ruslan workshop C client framework
+Ruslan workshop C client framework.
