@@ -9,7 +9,7 @@ typedef struct
     char *name;
     unsigned balance, stock_count, stock_value, total_value;
 } group;
-.
+
 int *get_market_data(struct tm from, struct tm to);
 group get_info();
 void buy();
