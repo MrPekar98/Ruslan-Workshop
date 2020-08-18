@@ -10,6 +10,18 @@
 #define SELL 1
 #define BUY 2
 
+#define TWOCIPHER_STR(num) ({ \
+    char str_num[3]; \
+    (num) >= 10 ? sprintf(str_num, "%d\0", (num)) : sprintf(str_num, "0%d\0", (num)); \
+    str_num; \
+})
+
+#define ISO8601(tm) ({ \
+    char str[20]; \
+    sprintf(str, "%d-%s-%sT%s:%s:%s\0", (tm).tm_year, TWOCIPHER_STR((tm).tm_mon + 1), TWOCIPHER_STR((tm).tm_mday), TWOCIPHER_STR((tm).tm_hour), TWOCIPHER_STR((tm).tm_min), TWOCIPHER_STR((tm).tm_sec)) \
+    str; \
+})
+
 static char *x_token = NULL;
 
 // Prototypes.
@@ -24,9 +36,9 @@ void set_token(const char *token)
 }
 
 // Returns market data.
-int *get_market_data()
+int *get_market_data(struct tm from, struct tm to)
 {
-
+    // TODO: Use ISO8601 macro to convert args into string representations.
 }
 
 // Returns record of group.
