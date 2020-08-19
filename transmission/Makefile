@@ -1,6 +1,6 @@
 CC=gcc
 PLATFORMFLAG=-DLINUX
-CFLAGS=-Wall
+CFLAGS=-Wall -pedantic -pthread
 WINFLAGS=-lws2_32
 
 program: program.o http.o transmitter.o
