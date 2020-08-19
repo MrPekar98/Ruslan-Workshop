@@ -4,14 +4,13 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include <stdio.h>
-
 #ifdef WINDOWS
 #include <winsock2.h>
 #pragma comment(lib, "ws2_32.lib")
 #else
 #include <sys/socket.h>
 #include <arpa/inet.h>
+#include <netdb.h>
 #endif
 
 #define PORT 3000
@@ -35,6 +34,7 @@ static char *x_token = NULL;
 
 // Prototypes.
 static int sockfd_setup(const char *url, unsigned port);
+static inline char *host_ip(struct hostent host);
 static void execute_post(void *arg);
 static inline void future(void (*job)(void *arg), void *arg);
 
@@ -88,7 +88,12 @@ static int sockfd_setup(const char *url, unsigned port)
 #endif
 
     struct sockaddr_in address;
-    address.sin_addr.s_addr = inet_addr(url);
+    struct hostent *host = gethostbyname(url);
+
+    if (host == NULL)
+        return -1;
+
+    address.sin_addr.s_addr = inet_addr(host_ip(*host));
     address.sin_family = AF_INET;
     address.sin_port = htons(port);
 
@@ -99,6 +104,21 @@ static int sockfd_setup(const char *url, unsigned port)
     }
 
     return sockfd;
+}
+
+// Returns last ip of hostent address list.
+static inline char *host_ip(struct hostent host)
+{
+    struct in_addr **addr_list = (struct in_addr **) host.h_addr_list;
+    unsigned i;
+    char *ip = malloc(100);
+
+    for (i = 0; addr_list[i] != NULL; i++)
+    {
+        strcpy(ip, inet_ntoa(*addr_list[i]));
+    }
+
+    return ip;
 }
 
 // Executes sell and buy transmission.
