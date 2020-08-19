@@ -81,11 +81,11 @@ static int sockfd_setup(const char *url, unsigned port)
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
         return -1;
 #else
-    int sockfd = socket(AF_INET, SOCK_STREAM, 0);
-
-    if (sockfd == -1)
-        return -1;
+    int sockfd;
 #endif
+
+    if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
+        return -1;
 
     struct sockaddr_in address;
     struct hostent *host = gethostbyname(url);
