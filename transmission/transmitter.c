@@ -4,8 +4,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include <stdio.h>
-
 #ifdef WINDOWS
 #include <winsock2.h>
 #pragma comment(lib, "ws2_32.lib")
