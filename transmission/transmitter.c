@@ -4,7 +4,16 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#define HOST "172.17.68.206"
+#include <stdio.h>
+
+#ifdef WINDOWS
+#include <winsock2.h>
+#pragma comment(lib, "ws2_32.lib")
+#else
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#endif
+
 #define PORT 3000
 
 #define SELL 1
@@ -25,6 +34,7 @@
 static char *x_token = NULL;
 
 // Prototypes.
+static int sockfd_setup(const char *url, unsigned port);
 static void execute_post(void *arg);
 static inline void future(void (*job)(void *arg), void *arg);
 
@@ -59,6 +69,36 @@ void sell()
 {
     short opt = SELL;
     future(execute_post, &opt);
+}
+
+// Sets up socket connection and return socker file descriptor.
+static int sockfd_setup(const char *url, unsigned port)
+{
+#ifdef WINDOWS
+    WSADATA wsa;
+    SOCKET sockfd;
+
+    if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
+        return -1;
+#else
+    int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+
+    if (sockfd == -1)
+        return -1;
+#endif
+
+    struct sockaddr_in address;
+    address.sin_addr.s_addr = inet_addr(url);
+    address.sin_family = AF_INET;
+    address.sin_port = htons(port);
+
+    if (connect(sockfd, (struct sockaddr *) &address, sizeof(address) < 0))
+    {
+        close(sockfd);
+        return -1;
+    }
+
+    return sockfd;
 }
 
 // Executes sell and buy transmission.
