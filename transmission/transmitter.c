@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#include <stdio.h>
+
 #ifdef WINDOWS
 #include <winsock2.h>
 #pragma comment(lib, "ws2_32.lib")
@@ -97,7 +99,7 @@ static int sockfd_setup(const char *url, unsigned port)
     address.sin_family = AF_INET;
     address.sin_port = htons(port);
 
-    if (connect(sockfd, (struct sockaddr *) &address, sizeof(address) < 0))
+    if (connect(sockfd, (struct sockaddr *) &address, sizeof(address)) < 0)
     {
         close(sockfd);
         return -1;
