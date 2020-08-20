@@ -1,35 +1,15 @@
 CC=gcc
+INC=../lib/json-parser
 PLATFORMFLAG=-DLINUX
-CFLAGS=-pedantic -pthread
+CFLAGS=../lib/json-parser/json.c -lm -pthread -pedantic -I $(INC)
 WINFLAGS=-lws2_32
 
-program: program.o http.o transmitter.o
+program: program.c http.c transmitter.c
 ifeq ($(PLATFORMFLAG), -DWINDOWS)
-	$(CC) $(CFLAGS) -o program program.o transmitter.o http.o $(WINFLAGS)
+	$(CC) -o program program.c http.c transmitter.c $(CFLAGS) $(WINFLAGS) $(PLATFORMFLAG)
 else
-	$(CC) $(CFLAGS) -o program program.o transmitter.o http.o
-endif
-
-program.o: program.c
-ifeq ($(PLATFORMFLAG), -DWINDOWS)
-	$(CC) $(CFLAGS) -c program.c $(PLATFORMFLAG) $(WINFLAGS)
-else
-	$(CC) $(CFLAGS) -c program.c $(PLATFORMFLAG)
-endif
-
-http.o: http.c
-ifeq ($(PLATFORMFLAG), -DWINDOWS)
-	$(CC) $(CFLAGS) -c http.c $(PLATFORMFLAG) $(WINFLAGS)
-else
-	$(CC) $(CFLAGS) -c http.c $(PLATFORMFLAG)
-endif
-
-transmitter.o: transmitter.c
-ifeq ($(PLATFORMFLAG), -DWINDOWS)
-	$(CC) $(CFLAGS) -c transmitter.c $(PLATFORMFLAG) $(WINFLAGS)
-else
-	$(CC) $(CFLAGS) -c transmitter.c $(PLATFORMFLAG)
+	$(CC) -o program program.c http.c transmitter.c $(CFLAGS) $(PLATFORMFLAG)
 endif
 
 clean:
-	rm http.o transmitter.o program.o
+	rm program
