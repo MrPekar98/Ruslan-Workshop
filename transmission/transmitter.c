@@ -80,13 +80,15 @@ static int sockfd_setup(const char *url, unsigned port)
 
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
         return -1;
+
+    if ((sockfd = socket(AF_INET, SOCK_STREM, 0)) == INVALID_SOCKET)
+        return -1;
 #else
     int sockfd;
-#endif
 
-    if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
+    if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
         return -1;
-
+#endif
     struct sockaddr_in address;
     struct hostent *host = gethostbyname(url);
 
