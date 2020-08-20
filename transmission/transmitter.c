@@ -6,6 +6,7 @@
 
 #ifdef WINDOWS
 #include <winsock2.h>
+#include <pthread.h>
 #pragma comment(lib, "ws2_32.lib")
 #else
 #include <sys/socket.h>
@@ -35,8 +36,8 @@ static char *x_token = NULL;
 // Prototypes.
 static int sockfd_setup(const char *url, unsigned port);
 static inline char *host_ip(struct hostent host);
-static void execute_post(void *arg);
-static inline void future(void (*job)(void *arg), void *arg);
+static void *execute_post(void *arg);
+static inline void future(void *(*job)(void *arg), void *arg);
 
 // Stores HTTP token.
 void set_token(const char *token)
@@ -124,7 +125,7 @@ static inline char *host_ip(struct hostent host)
 }
 
 // Executes sell and buy transmission.
-static void execute_post(void *arg)
+static void *execute_post(void *arg)
 {
     if (*((short *) arg) == SELL)
     {
@@ -135,16 +136,19 @@ static void execute_post(void *arg)
     {
 
     }
+
+    return NULL;
 }
 
 // Executes procedure asynchronously.
 // Does not execute asynchronously on Windows.
-static inline void future(void (*job)(void *arg), void *arg)
+static inline void future(void *(*job)(void *arg), void *arg)
 {
 #if defined(LINUX) || defined(MAC)
     if (fork() == 0)
         job(arg);
 #else
-    job(arg);
+    pthread_t t;
+    pthread_create(&t, NULL, job, arg);
 #endif
 }
