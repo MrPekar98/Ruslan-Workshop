@@ -3,17 +3,23 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <stdio.h>
 
 #ifdef WINDOWS
 #include <winsock2.h>
 #include <pthread.h>
+
+typedef SOCKET sock_t;
 #pragma comment(lib, "ws2_32.lib")
 #else
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <netdb.h>
+
+typedef int sock_t;
 #endif
 
+#define HOST "172.17.68.206"
 #define PORT 3000
 
 #define SELL 1
@@ -34,7 +40,7 @@
 static char *x_token = NULL;
 
 // Prototypes.
-static int sockfd_setup(const char *url, unsigned port);
+static sock_t sockfd_setup(const char *url, unsigned port);
 static inline char *host_ip(struct hostent host);
 static void *execute_post(void *arg);
 static inline void future(void *(*job)(void *arg), void *arg);
@@ -73,11 +79,11 @@ void sell()
 }
 
 // Sets up socket connection and return socker file descriptor.
-static int sockfd_setup(const char *url, unsigned port)
+static sock_t sockfd_setup(const char *url, unsigned port)
 {
 #ifdef WINDOWS
     WSADATA wsa;
-    SOCKET sockfd;
+    sock_t sockfd;
 
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
         return -1;
@@ -85,7 +91,7 @@ static int sockfd_setup(const char *url, unsigned port)
     if ((sockfd = socket(AF_INET, SOCK_STREM, 0)) == INVALID_SOCKET)
         return -1;
 #else
-    int sockfd;
+    sock_t sockfd;
 
     if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
         return -1;
@@ -127,15 +133,23 @@ static inline char *host_ip(struct hostent host)
 // Executes sell and buy transmission.
 static void *execute_post(void *arg)
 {
-    if (*((short *) arg) == SELL)
-    {
+    struct http request = http_init("/ruslan", POST);
+    http_add_header_property(&request, "X-Token", x_token);
 
-    }
+    char *http_post = http_str(request, NULL);
+    char *host = malloc(50);
+
+    if (*((short *) arg) == SELL)
+        sprintf(host, "%s:%d/api/v1/sell", HOST, PORT);
 
     else if (*((short *) arg) == BUY)
-    {
+        sprintf(host, "%s:%d/api/v1/buy", HOST, PORT);
 
-    }
+    sock_t sockfd = sockfd_setup(host, 80);
+    send(sockfd, http_post, strlen(http_post), 0);
+    close(sockfd);
+    free(http_post);
+    free(host);
 
     return NULL;
 }
